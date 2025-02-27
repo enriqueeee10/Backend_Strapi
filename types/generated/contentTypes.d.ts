@@ -372,6 +372,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
   collectionName: 'clientes';
   info: {
+    description: '';
     displayName: 'Cliente';
     pluralName: 'clientes';
     singularName: 'cliente';
@@ -382,12 +383,16 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
   attributes: {
     apellido_materno: Schema.Attribute.String & Schema.Attribute.Required;
     apellido_paterno: Schema.Attribute.String & Schema.Attribute.Required;
-    correo: Schema.Attribute.Email & Schema.Attribute.Required;
+    correo: Schema.Attribute.Email &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     direccion: Schema.Attribute.String & Schema.Attribute.Required;
     dni: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 8;
       }>;
@@ -407,6 +412,34 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 9;
       }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPruebaPrueba extends Struct.CollectionTypeSchema {
+  collectionName: 'pruebas';
+  info: {
+    displayName: 'prueba';
+    pluralName: 'pruebas';
+    singularName: 'prueba';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::prueba.prueba'
+    > &
+      Schema.Attribute.Private;
+    prueba_text: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -955,6 +988,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::cliente.cliente': ApiClienteCliente;
+      'api::prueba.prueba': ApiPruebaPrueba;
       'api::servicio.servicio': ApiServicioServicio;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
