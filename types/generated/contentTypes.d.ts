@@ -410,6 +410,7 @@ export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
 export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
   collectionName: 'clientes';
   info: {
+    description: '';
     displayName: 'Cliente';
     pluralName: 'clientes';
     singularName: 'cliente';
@@ -421,12 +422,16 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
     agenda: Schema.Attribute.Relation<'oneToMany', 'api::agenda.agenda'>;
     apellido_materno: Schema.Attribute.String & Schema.Attribute.Required;
     apellido_paterno: Schema.Attribute.String & Schema.Attribute.Required;
-    correo: Schema.Attribute.Email & Schema.Attribute.Required;
+    correo: Schema.Attribute.Email &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     direccion: Schema.Attribute.String & Schema.Attribute.Required;
     dni: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 8;
       }>;
