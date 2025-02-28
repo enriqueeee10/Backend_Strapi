@@ -22,6 +22,12 @@
       "type": "boolean",
       "default": true,
       "required": true
+    },
+    "agenda": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::agenda.agenda",
+      "mappedBy": "id_servicio"
     }
   }
 }

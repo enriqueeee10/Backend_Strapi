@@ -369,6 +369,44 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
+  collectionName: 'agendas';
+  info: {
+    displayName: 'agenda';
+    pluralName: 'agendas';
+    singularName: 'agenda';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descripcion: Schema.Attribute.Text & Schema.Attribute.Required;
+    estado: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    fecha_agenda: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    id_cliente: Schema.Attribute.Relation<'manyToOne', 'api::cliente.cliente'>;
+    id_empresa: Schema.Attribute.Relation<'manyToOne', 'api::empresa.empresa'>;
+    id_servicio: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::servicio.servicio'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::agenda.agenda'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
   collectionName: 'clientes';
   info: {
@@ -380,6 +418,7 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    agenda: Schema.Attribute.Relation<'oneToMany', 'api::agenda.agenda'>;
     apellido_materno: Schema.Attribute.String & Schema.Attribute.Required;
     apellido_paterno: Schema.Attribute.String & Schema.Attribute.Required;
     correo: Schema.Attribute.Email & Schema.Attribute.Required;
@@ -413,6 +452,57 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiEmpresaEmpresa extends Struct.CollectionTypeSchema {
+  collectionName: 'empresas';
+  info: {
+    displayName: 'empresa';
+    pluralName: 'empresas';
+    singularName: 'empresa';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    agenda: Schema.Attribute.Relation<'oneToMany', 'api::agenda.agenda'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    estado: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::empresa.empresa'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    razon_social: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 254;
+        minLength: 1;
+      }>;
+    ruc: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 11;
+        minLength: 11;
+      }>;
+    telefono: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 9;
+        minLength: 9;
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiServicioServicio extends Struct.CollectionTypeSchema {
   collectionName: 'servicios';
   info: {
@@ -424,6 +514,7 @@ export interface ApiServicioServicio extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    agenda: Schema.Attribute.Relation<'oneToMany', 'api::agenda.agenda'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -954,7 +1045,9 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::agenda.agenda': ApiAgendaAgenda;
       'api::cliente.cliente': ApiClienteCliente;
+      'api::empresa.empresa': ApiEmpresaEmpresa;
       'api::servicio.servicio': ApiServicioServicio;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

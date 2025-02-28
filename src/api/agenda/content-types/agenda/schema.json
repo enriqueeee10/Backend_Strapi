@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "agendas",
+  "info": {
+    "singularName": "agenda",
+    "pluralName": "agendas",
+    "displayName": "agenda"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "id_empresa": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::empresa.empresa",
+      "inversedBy": "agenda"
+    },
+    "id_cliente": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::cliente.cliente",
+      "inversedBy": "agenda"
+    },
+    "id_servicio": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::servicio.servicio",
+      "inversedBy": "agenda"
+    },
+    "fecha_agenda": {
+      "type": "datetime",
+      "required": true
+    },
+    "descripcion": {
+      "type": "text",
+      "required": true
+    },
+    "estado": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

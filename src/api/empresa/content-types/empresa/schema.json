@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "empresas",
+  "info": {
+    "singularName": "empresa",
+    "pluralName": "empresas",
+    "displayName": "empresa"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "ruc": {
+      "type": "string",
+      "unique": true,
+      "minLength": 11,
+      "maxLength": 11,
+      "required": true
+    },
+    "razon_social": {
+      "type": "text",
+      "maxLength": 254,
+      "minLength": 1,
+      "required": true,
+      "unique": true
+    },
+    "telefono": {
+      "type": "string",
+      "maxLength": 9,
+      "minLength": 9,
+      "required": true
+    },
+    "estado": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "agenda": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::agenda.agenda",
+      "mappedBy": "id_empresa"
+    }
+  }
+}
