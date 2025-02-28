@@ -411,7 +411,7 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
   collectionName: 'clientes';
   info: {
     description: '';
-    displayName: 'Cliente';
+    displayName: 'cliente';
     pluralName: 'clientes';
     singularName: 'cliente';
   };
